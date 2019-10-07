@@ -21,7 +21,6 @@ router.post('/user', (request, response) => {
     .then(result =>
       response.send({
         email: result.email,
-        pasword: result.password,
         id: result.id,
       })
     )
