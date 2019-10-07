@@ -4,7 +4,7 @@ const databaseUrl =
   process.env.DATABASE_URL ||
   'postgres://postgres:password@localhost:5432/postgres';
 
-//console.log(process.env.DATABASE_URL);
+console.log('database_url:', process.env.DATABASE_URL);
 
 const db = new Sequelize(databaseUrl);
 
