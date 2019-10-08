@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 
 const Room = db.define(
-  'rooms',
+  'room',
   {
     galaxyName: {
       type: Sequelize.STRING,
@@ -10,11 +10,11 @@ const Room = db.define(
     },
     playerOneId: {
       type: Sequelize.INTEGER,
-      allowNull: true,
+      // allowNull: false,
     },
     playerTwoId: {
       type: Sequelize.INTEGER,
-      allowNull: true,
+      // allowNull: false,
     },
     playerOneScore: {
       type: Sequelize.INTEGER,
@@ -25,10 +25,10 @@ const Room = db.define(
     winner: {
       type: Sequelize.INTEGER,
     },
-  },
-  {
-    tableName: 'rooms',
   }
+  // {
+  //   tableName: 'room',
+  // }
 );
 
 module.exports = Room;

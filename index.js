@@ -10,8 +10,9 @@ app.use(parserMiddleware);
 
 const authRouter = require('./auth/router');
 const userRouter = require('./User/router');
+const roomRouter = require('./Room/router');
 
-app.use(corsMiddleware, userRouter, authRouter);
+app.use(corsMiddleware, userRouter, authRouter, roomRouter);
 
 const port = process.env.PORT || 4000;
 const db = require('./db');

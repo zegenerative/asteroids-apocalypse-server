@@ -28,11 +28,11 @@ router.post('/room', auth, (request, response) => {
 
 router.get('/room', (request, response, next) => {
   Room.findAll()
-    .then(rooms => {
-      if (rooms.length === 0) {
+    .then(room => {
+      if (room.length === 0) {
         return response.status(404).send({ message: 'Rooms not found' });
       } else {
-        return response.send(rooms);
+        return response.send(room);
       }
     })
     .catch(error => next(error));
