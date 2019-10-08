@@ -4,8 +4,10 @@ const User = require('./model');
 const router = new Router();
 const bcrypt = require('bcrypt');
 const db = require('../db');
+const auth = require('../auth/middleware');
 
 // Create new user
+
 // OLD WAY (no checks)
 // router.post('/user', (request, response) => {
 //   console.log('request.body post to /user', request.body);
@@ -73,6 +75,24 @@ router.post('/user', (req, res, next) => {
   } else {
     res.status(400).send({ message: 'Not all data provided' });
   }
+});
+
+// Update user: totalScore and rank
+
+router.put('/user/:id', auth, (request, response, next) => {
+  User.findByPk(parseInt(request.params.id))
+    .then(user => {
+      console.log(user.dataValues);
+      console.log('totalScore', request.body.totalScore);
+      if (user) {
+        return user.update(request.body.totalScore).then(user => {
+          return response.json(user);
+        });
+      } else {
+        return response.status(404).send({ message: 'User not found' });
+      }
+    })
+    .catch(error => next(error));
 });
 
 module.exports = router;
