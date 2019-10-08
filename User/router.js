@@ -79,7 +79,7 @@ router.post('/user', (req, res, next) => {
 
 // Update user: totalScore and rank
 
-router.put('/user/:id', auth, (request, response, next) => {
+router.put('/user/:id', (request, response, next) => {
   User.findByPk(parseInt(request.params.id))
     .then(user => {
       console.log(user.dataValues);
