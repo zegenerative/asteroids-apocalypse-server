@@ -26,7 +26,7 @@ router.post('/room', auth, (request, response) => {
 
 // Get all rooms for stats endpoint
 
-router.get('/room', auth, (request, response, next) => {
+router.get('/room', (request, response, next) => {
   Room.findAll()
     .then(rooms => {
       if (rooms.length === 0) {
