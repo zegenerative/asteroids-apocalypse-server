@@ -1,12 +1,12 @@
 const Sequelize = require('sequelize');
-const sequelize = require('../db');
+const db = require('../db');
 
-const User = sequelize.define(
+const User = db.define(
   'users',
   {
-    userName: {
+    username: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     email: {
       type: Sequelize.STRING,
@@ -15,9 +15,6 @@ const User = sequelize.define(
     password: {
       type: Sequelize.STRING,
       allowNull: false,
-    },
-    currentScore: {
-      type: Sequelize.INTEGER,
     },
     totalScore: {
       type: Sequelize.INTEGER,

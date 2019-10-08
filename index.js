@@ -15,6 +15,7 @@ app.use(corsMiddleware, userRouter, authRouter);
 
 const port = process.env.PORT || 4000;
 const db = require('./db');
+const Room = require('./Room/model');
 
 function onListen() {
   console.log(`Listening on :${port}`);
