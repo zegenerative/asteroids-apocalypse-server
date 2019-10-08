@@ -75,6 +75,4 @@ router.post('/user', (req, res, next) => {
   }
 });
 
-// Get user profile from db
-
 module.exports = router;

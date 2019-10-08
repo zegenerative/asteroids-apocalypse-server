@@ -1,12 +1,12 @@
 const { Router } = require('express');
-const Room = require('../Game/model');
+const Room = require('../Room/model');
 const User = require('../User/model');
 const router = new Router();
 const auth = require('../auth/middleware');
 
 // User can create a room
 
-router.post('/rooms', auth, (request, response) => {
+router.post('/room', auth, (request, response) => {
   if (request.body.galaxyName) {
     Room.create(request.body)
       .then(result => {
@@ -26,7 +26,7 @@ router.post('/rooms', auth, (request, response) => {
 
 // Get all rooms for stats endpoint
 
-router.get('/rooms', (request, response, next) => {
+router.get('/room', (request, response, next) => {
   Room.findAll()
     .then(rooms => {
       if (rooms.length === 0) {
