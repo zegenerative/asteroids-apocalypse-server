@@ -28,24 +28,15 @@ db.sync({ force: false }).then(() =>
 Room.bulkCreate([
   {
     galaxyName: 'XYZ9',
-    status: {
-      values: ['empty', 'waiting', 'full', 'done'],
-      defaultValue: 'empty',
-    },
+    status: 'empty',
   },
   {
     galaxyName: 'Jupiter',
-    status: {
-      values: ['empty', 'waiting', 'full', 'done'],
-      defaultValue: 'empty',
-    },
+    status: 'empty',
   },
   {
     galaxyName: 'Milky Way',
-    status: {
-      values: ['empty', 'waiting', 'full', 'done'],
-      defaultValue: 'empty',
-    },
+    status: 'empty',
   },
 ]).catch(console.error);
 

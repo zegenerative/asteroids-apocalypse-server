@@ -27,7 +27,9 @@ router.post('/room', auth, (request, response) => {
 // Fetch all Rooms data for stats (GET, authentication required)
 
 router.get('/room', auth, (request, response, next) => {
-  Room.findAll()
+  Room.findAll({
+    order: [['createdAt', 'DESC']],
+  })
     .then(rooms => {
       if (rooms.length === 0) {
         return response.status(404).send({ message: 'Galaxy not found' });
