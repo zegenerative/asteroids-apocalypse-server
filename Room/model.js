@@ -8,6 +8,8 @@ const Room = db.define('room', {
   },
   status: {
     type: Sequelize.STRING,
+    values: ['empty', 'waiting', 'full', 'done'],
+    defaultValue: 'empty',
   },
   playerOneId: {
     type: Sequelize.INTEGER,

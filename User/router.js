@@ -79,25 +79,24 @@ router.post('/user', (req, res, next) => {
 
 // Update a user: totalScore and rank
 
-// router.put('/user/:id', (request, response, next) => {
-//   const newScore = parseInt(request.body.totalScore);
-//   User.findByPk(parseInt(request.params.id))
-//     .then(user => {
-//       console.log(user);
-//       console.log('totalScore', newScore);
-//       if (user) {
-//         return User.update({
-//           where: {
-//             totalScore: newScore,
-//           },
-//         }).then(user => {
-//           return response.json(user);
-//         });
-//       } else {
-//         return response.status(404).send({ message: 'User not found' });
-//       }
-//     })
-//     .catch(error => next(error));
-// });
+router.put('/user/:id', (request, response, next) => {
+  const idUserToUpdate = parseInt(request.params.id);
+  const newScore = parseInt(request.body.totalScore);
+  User.update(user => {
+    console.log(user);
+    console.log('totalScore', newScore);
+    if (user) {
+      return User.update({
+        where: {
+          id: request.params.id,
+        },
+      }).then(user => {
+        return response.json(user);
+      });
+    } else {
+      return response.status(404).send({ message: 'User not found' });
+    }
+  }).catch(error => next(error));
+});
 
 module.exports = router;
