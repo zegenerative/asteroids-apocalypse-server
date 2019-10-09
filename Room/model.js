@@ -31,3 +31,5 @@ const Room = db.define('room', {
 });
 
 module.exports = Room;
+
+// A room belongs to 2 users

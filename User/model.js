@@ -29,3 +29,23 @@ const User = db.define(
 );
 
 module.exports = User;
+
+// Room.hasMany(User);
+// User.belongsTo(Room);
+
+// Room.belongsToMany(User, {
+//     as: 'Player',
+//     through: userRelation,
+//     foreignKey: 'Player_id',
+//     onDelete: 'cascade',
+//     hooks: true
+// });
+// User.belongsToMany(Room, {
+//     as: 'Player',
+//     through: userRelation,
+//     foreignKey: 'Player_id',
+//     onDelete: 'cascade',
+//     hooks: true
+// });
+// userRelation.belongsTo(User, { as: 'follower', foreignKey: 'follower_id' });
+// userRelation.belongsTo(User, { as: 'followed', foreignKey: 'followed_id' });
