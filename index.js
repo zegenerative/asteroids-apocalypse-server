@@ -21,7 +21,7 @@ const userRouter = require('./User/router');
 const roomRouter = require('./Room/router');
 
 // Sync Db and create default rooms
-db.sync({ force: true }).then(() =>
+db.sync({ force: false }).then(() =>
   console.log('Database successfully created')
 );
 
