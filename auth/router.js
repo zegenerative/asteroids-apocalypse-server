@@ -33,6 +33,7 @@ router.post('/login', (req, res, next) => {
           // 3. if the password is correct, return a JWT with the userId of the user (user.id)
           res.send({
             jwt: toJWT({ userId: entity.id }),
+            username: entity.username,
           });
         } else {
           res.status(400).send({

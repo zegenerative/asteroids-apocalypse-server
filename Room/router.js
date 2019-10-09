@@ -4,7 +4,7 @@ const User = require('../User/model');
 const router = new Router();
 const auth = require('../auth/middleware');
 
-// User can create a room
+// User can create a room (POST, authentication required)
 
 router.post('/room', auth, (request, response) => {
   if (request.body.galaxyName) {
@@ -24,18 +24,34 @@ router.post('/room', auth, (request, response) => {
   }
 });
 
-// Get all rooms for stats endpoint
+// Fetch all Rooms data for stats (GET, authentication required)
 
 router.get('/room', auth, (request, response, next) => {
   Room.findAll()
     .then(rooms => {
       if (rooms.length === 0) {
-        return response.status(404).send({ message: 'Rooms not found' });
+        return response.status(404).send({ message: 'Galaxy not found' });
       } else {
         return response.send(rooms);
       }
     })
     .catch(error => next(error));
 });
+
+// Fetch selected room (GET, authentication required)
+
+router.get('/room/:id', auth, (request, response, next) => {
+  Room.findByPk(parseInt(request.params.id))
+    .then(room => {
+      if (!room) {
+        return response.status(404).send({ message: 'Galaxy does not exist' });
+      } else {
+        return response.send(room);
+      }
+    })
+    .catch(error => next(error));
+});
+
+// Update selected Room (PUT, authentication required)
 
 module.exports = router;

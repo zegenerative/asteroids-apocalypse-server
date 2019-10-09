@@ -6,6 +6,9 @@ const Room = db.define('room', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  status: {
+    type: Sequelize.STRING,
+  },
   playerOneId: {
     type: Sequelize.INTEGER,
     // allowNull: false,

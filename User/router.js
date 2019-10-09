@@ -77,22 +77,27 @@ router.post('/user', (req, res, next) => {
   }
 });
 
-// Update user: totalScore and rank
+// Update a user: totalScore and rank
 
-router.put('/user/:id', auth, (request, response, next) => {
-  User.findByPk(parseInt(request.params.id))
-    .then(user => {
-      console.log(user.dataValues);
-      console.log('totalScore', request.body.totalScore);
-      if (user) {
-        return user.update(request.body.totalScore).then(user => {
-          return response.json(user);
-        });
-      } else {
-        return response.status(404).send({ message: 'User not found' });
-      }
-    })
-    .catch(error => next(error));
-});
+// router.put('/user/:id', (request, response, next) => {
+//   const newScore = parseInt(request.body.totalScore);
+//   User.findByPk(parseInt(request.params.id))
+//     .then(user => {
+//       console.log(user);
+//       console.log('totalScore', newScore);
+//       if (user) {
+//         return User.update({
+//           where: {
+//             totalScore: newScore,
+//           },
+//         }).then(user => {
+//           return response.json(user);
+//         });
+//       } else {
+//         return response.status(404).send({ message: 'User not found' });
+//       }
+//     })
+//     .catch(error => next(error));
+// });
 
 module.exports = router;
