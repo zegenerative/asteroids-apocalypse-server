@@ -34,20 +34,17 @@ const Room = db.define('room', {
 
 Room.hasMany(User);
 User.belongsTo(Room);
+//console.log('Room.users test', Room.Users);
 
 Room.belongsToMany(User, {
   as: 'playerOne',
   through: roomRelation,
   foreignKey: 'playerOneId',
-  //onDelete: 'cascade',
-  //hooks: true,
 });
 Room.belongsToMany(User, {
   as: 'playerTwo',
   through: roomRelation,
   foreignKey: 'playerTwoId',
-  //onDelete: 'cascade',
-  //hooks: true,
 });
 roomRelation.belongsTo(Room, { as: 'playerOne', foreignKey: 'player_id' });
 roomRelation.belongsTo(Room, { as: 'playerTwo', foreignKey: 'player_id' });
