@@ -77,26 +77,23 @@ router.post('/user', (req, res, next) => {
   }
 });
 
-// Update a user: totalScore and rank
+// Update a user: totalScore and rank FIX ME, add validation logic!
 
-router.put('/user/:id', (request, response, next) => {
-  const idUserToUpdate = parseInt(request.params.id);
-  const newScore = parseInt(request.body.totalScore);
-  User.update(user => {
-    console.log(user);
-    console.log('totalScore', newScore);
-    if (user) {
-      return User.update({
-        where: {
-          id: request.params.id,
-        },
-      }).then(user => {
-        return response.json(user);
-      });
-    } else {
-      return response.status(404).send({ message: 'User not found' });
-    }
-  }).catch(error => next(error));
-});
+// router.put('/users/:id', (request, response) => {
+//   console.log(parseInt(request.params.id));
+//   console.log('req body:', request.body);
+//   User.findByPk(parseInt(request.params.userId)).then(user => {
+//     console.log(user.dataValues);
+//     if (user) {
 
+//       return user.update({score: user.score + 20,
+//        }).then(user => {
+//         console.log('UPDATED user:', user.dataValues);
+//         return response.json(user);
+//       });
+//     } else {
+//       return response.status(404).send({ message: 'No such user exists' });
+//     }
+//   });
+// });
 module.exports = router;

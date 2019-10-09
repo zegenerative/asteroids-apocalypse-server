@@ -38,7 +38,7 @@ router.get('/room', auth, (request, response, next) => {
     .catch(error => next(error));
 });
 
-// Fetch selected room (GET, authentication required)
+// Fetch selected room (GET, authentication required ADD)
 
 router.get('/room/:id', auth, (request, response, next) => {
   Room.findByPk(parseInt(request.params.id))
@@ -52,6 +52,22 @@ router.get('/room/:id', auth, (request, response, next) => {
     .catch(error => next(error));
 });
 
-// Update selected Room (PUT, authentication required)
+// Update selected Room (PUT, authentication required ADD) FIX VALIDATION
+
+router.put('/room/:id', auth, (request, response) => {
+  //console.log(parseInt(request.params.id));
+  //console.log('req body:', request.body);
+  Room.findByPk(parseInt(request.params.id)).then(room => {
+    //console.log(room.dataValues);
+    if (room) {
+      return room.update(request.body).then(room => {
+        //console.log('UPDATED room:', room.dataValues);
+        return response.json(room);
+      });
+    } else {
+      return response.status(404).send({ message: 'No such room exists' });
+    }
+  });
+});
 
 module.exports = router;
