@@ -87,10 +87,12 @@ router.put('/room/:id', auth, (request, response) => {
         });
     } else if (room.status === 'full') {
       return room.update(request.body).then(room => {
-        return response
-          .status(200)
-          .send({ status: room.status, room: room.id });
-        //.then(response.redirect('/room')) --> we want to redirect to the lobby at this point
+        return (
+          response
+            // .status(200)
+            //.then(Response.redirect('/room'))
+            .send({ status: room.status, room: room.id })
+        ); // --> we want to redirect to the lobby at this point
       });
     } else {
       return response.status(404).send({ message: 'No such room exists' });
