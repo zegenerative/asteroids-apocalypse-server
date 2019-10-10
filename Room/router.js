@@ -42,7 +42,7 @@ router.get('/room', auth, (request, response, next) => {
 
 // Fetch selected room (GET, authentication required --> ADD)
 
-router.get('/room/:id', auth, (request, response, next) => {
+router.get('/room/:id', (request, response, next) => {
   Room.findByPk(parseInt(request.params.id))
     .then(room => {
       if (!room) {
@@ -58,7 +58,7 @@ router.get('/room/:id', auth, (request, response, next) => {
 
 // FOR LATER: add if (room.status === "waiting" && room.users.length < 2)
 
-router.put('/room/:id', auth, (request, response) => {
+router.put('/room/:id', (request, response) => {
   //console.log(parseInt(request.params.id));
   //console.log('req body:', request.body);
   Room.findByPk(parseInt(request.params.id)).then(room => {
@@ -86,14 +86,13 @@ router.put('/room/:id', auth, (request, response) => {
             .send({ status: room.status, room: room.id });
         });
     } else if (room.status === 'full') {
-      return room.update(request.body).then(room => {
-        return (
-          response
-            // .status(200)
-            //.then(Response.redirect('/room'))
-            .send({ status: room.status, room: room.id })
-        ); // --> we want to redirect to the lobby at this point
+      return response.send({
+        status: room.status,
+        room: room.id,
+        message: 'room is already full',
       });
+      //.then(() => response.redirect('/room')); this does not work
+      // how to redirect to lobby here?
     } else {
       return response.status(404).send({ message: 'No such room exists' });
     }
