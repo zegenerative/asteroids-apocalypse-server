@@ -25,7 +25,11 @@ const auth = require('../auth/middleware');
 //   }
 // });
 
-const stream = new Sse();
+const allStreams = {}
+
+//this is just one stream
+const galaxyStream = new Sse();
+const roomStream = new Sse()
 
 router.post('/room', auth, async (request, response) => {
   // console.log('got a request on /message', request.body);
@@ -36,13 +40,23 @@ router.post('/room', auth, async (request, response) => {
 
   const room = await Room.findAll();
   const data = JSON.stringify(room);
-  stream.send(data);
+  galaxyStream.send(data);
   response.status(200);
   response.send('room created');
 });
 
-// Fetch all Rooms data for stats (GET, authentication required)
+//lobby
+router.get('/stream', async (request, response) => {
+  console.log('got a request on stream');
+  const rooms = await Room.findAll();
+  const data = JSON.stringify(rooms);
+  console.log('data is:', data);
 
+  galaxyStream.updateInit(data);
+  galaxyStream.init(request, response);
+});
+
+// Fetch all Rooms data for stats (GET, authentication required)
 router.get('/room', auth, (request, response, next) => {
   Room.findAll({
     order: [['createdAt', 'DESC']],
@@ -75,45 +89,35 @@ router.get('/room/:id', auth, (request, response, next) => {
 
 // FOR LATER: add if (room.status === "waiting" && room.users.length < 2)
 
-router.put('/room/:id', auth, (request, response) => {
-  //console.log(parseInt(request.params.id));
-  //console.log('req body:', request.body);
-  Room.findByPk(parseInt(request.params.id)).then(room => {
-    //console.log(room.dataValues);
+router.put('/room/:id', auth, async (request, response) => {
+
+  const room = await Room.findByPk(parseInt(request.params.id))
     if (room.status === 'empty') {
-      return room
-        .update({
+        const change = room.update({
           roomId: request.params.id,
           status: 'waiting',
         })
-        .then(room => {
-          return response
-            .status(200)
-            .send({ status: room.status, room: room.id, message: 'ok' });
-        });
-    } else if (room.status === 'waiting') {
-      return room
-        .update({
-          roomId: request.params.id,
-          status: 'full',
-        })
-        .then(room => {
-          return response
-            .status(200)
-            .send({ status: room.status, room: room.id });
-        });
+        const data = JSON.stringify(change);
+        stream.send(data);
+
+    } else  if (room.status === 'waiting') {
+      const change = room.update({
+        roomId: request.params.id,
+        status: 'full',
+      })
+      stream.send(change);
+
     } else if (room.status === 'full') {
       return response.send({
         status: room.status,
         room: room.id,
         message: 'room is already full, redirect to lobby',
       });
-      //.then(() => response.redirect('/room')); this does not work
-      // how to redirect to lobby here?
+
     } else {
       return response.status(404).send({ message: 'No such room exists' });
     }
-  });
 });
+
 
 module.exports = router;
