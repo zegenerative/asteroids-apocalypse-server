@@ -69,3 +69,18 @@ app.get('/stream', async (request, response) => {
   stream.updateInit(data);
   stream.init(request, response);
 });
+
+// app.post('/message', async (request, response) => {
+//   console.log('got a request on /message', request.body);
+//   const { message } = request.body;
+//   const entity = await Room.create({
+//     message,
+//     user: 'its me',
+//   });
+
+//   const room = await Room.findAll();
+//   const data = JSON.stringify(room);
+//   stream.send(data);
+//   response.status(200);
+//   response.send('thanks for your messsage');
+// });

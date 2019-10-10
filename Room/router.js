@@ -4,18 +4,6 @@ const User = require('../User/model');
 const router = new Router();
 const auth = require('../auth/middleware');
 
-// Stream rood data setup
-// function factory(stream) {
-//   const router = new Router();
-//   const words = ["red", "green", "blue", "yellow"];
-
-//   //sends all the rooms with all the users in it to the stream/client
-//   async function update() {
-//     const rooms = await Room.findAll({ include: [User] });
-//     const data = JSON.stringify(rooms);
-//     stream.send(data);
-//   }
-
 // User can create a room (POST, authentication required)
 
 router.post('/room', auth, (request, response) => {
@@ -101,7 +89,7 @@ router.put('/room/:id', auth, (request, response) => {
       return response.send({
         status: room.status,
         room: room.id,
-        message: 'room is already full, redirecting to lobby',
+        message: 'room is already full, redirect to lobby',
       });
       //.then(() => response.redirect('/room')); this does not work
       // how to redirect to lobby here?
