@@ -8,28 +8,6 @@ const auth = require('../auth/middleware');
 
 // Create new user
 
-// OLD WAY (no checks)
-// router.post('/user', (request, response) => {
-//   console.log('request.body post to /user', request.body);
-//   const { email, password, userName } = request.body;
-//   const user = {
-//     email: email,
-//     password: bcrypt.hashSync(password, 10),
-//     userName,
-//   };
-
-//   console.log('user', user);
-
-//   User.create(user)
-//     .then(result =>
-//       response.send({
-//         email: result.email,
-//         id: result.id,
-//       })
-//     )
-//     .catch(console.error);
-// });
-
 router.post('/user', (req, res, next) => {
   const { email, password, username } = req.body;
 

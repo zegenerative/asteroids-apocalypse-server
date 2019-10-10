@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const Sse = require('json-sse');
 const Room = require('../Room/model');
 const User = require('../User/model');
 const router = new Router();
@@ -6,22 +7,38 @@ const auth = require('../auth/middleware');
 
 // User can create a room (POST, authentication required)
 
-router.post('/room', auth, (request, response) => {
-  if (request.body.galaxyName) {
-    Room.create(request.body)
-      .then(result => {
-        return response.status(201).send(result);
-      })
-      .catch(error => {
-        if (error.name === 'SequelizeValidationError') {
-          return response
-            .status(422)
-            .send({ message: 'Galaxy name cannot be null' });
-        } else {
-          return response.status(400).send({ message: 'Bad request' });
-        }
-      });
-  }
+// router.post('/room', auth, (request, response) => {
+//   if (request.body.galaxyName) {
+//     Room.create(request.body)
+//       .then(result => {
+//         return response.status(201).send(result);
+//       })
+//       .catch(error => {
+//         if (error.name === 'SequelizeValidationError') {
+//           return response
+//             .status(422)
+//             .send({ message: 'Galaxy name cannot be null' });
+//         } else {
+//           return response.status(400).send({ message: 'Bad request' });
+//         }
+//       });
+//   }
+// });
+
+const stream = new Sse();
+
+router.post('/room', auth, async (request, response) => {
+  // console.log('got a request on /message', request.body);
+  const { galaxyName } = request.body;
+  const entity = await Room.create({
+    galaxyName,
+  });
+
+  const room = await Room.findAll();
+  const data = JSON.stringify(room);
+  stream.send(data);
+  response.status(200);
+  response.send('room created');
 });
 
 // Fetch all Rooms data for stats (GET, authentication required)
