@@ -42,7 +42,7 @@ router.get('/room', auth, (request, response, next) => {
 
 // Fetch selected room (GET, authentication required --> ADD)
 
-router.get('/room/:id', (request, response, next) => {
+router.get('/room/:id', auth, (request, response, next) => {
   Room.findByPk(parseInt(request.params.id))
     .then(room => {
       if (!room) {
@@ -58,7 +58,7 @@ router.get('/room/:id', (request, response, next) => {
 
 // FOR LATER: add if (room.status === "waiting" && room.users.length < 2)
 
-router.put('/room/:id', (request, response) => {
+router.put('/room/:id', auth, (request, response) => {
   //console.log(parseInt(request.params.id));
   //console.log('req body:', request.body);
   Room.findByPk(parseInt(request.params.id)).then(room => {
