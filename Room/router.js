@@ -27,7 +27,7 @@ const auth = require('../auth/middleware');
 
 const stream = new Sse();
 
-router.post('/room', auth, async (request, response) => {
+router.post('/room', async (request, response) => {
   // console.log('got a request on /message', request.body);
   const { galaxyName } = request.body;
   const entity = await Room.create({
@@ -42,6 +42,15 @@ router.post('/room', auth, async (request, response) => {
 });
 
 // Fetch all Rooms data for stats (GET, authentication required)
+router.get('/stream', async (request, response) => {
+  console.log('got a request on stream');
+  const rooms = await Room.findAll();
+  const data = JSON.stringify(rooms);
+  console.log('data is:', data);
+
+  stream.updateInit(data);
+  stream.init(request, response);
+});
 
 router.get('/room', auth, (request, response, next) => {
   Room.findAll({
