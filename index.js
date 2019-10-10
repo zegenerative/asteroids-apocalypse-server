@@ -41,9 +41,6 @@ Room.bulkCreate([
   },
 ]).catch(console.error);
 
-// Setup stream
-const stream = new Sse();
-
 // Use middleware
 app.use(corsMiddleware);
 app.use(parserMiddleware);
@@ -59,6 +56,7 @@ function onListen() {
 app.listen(port, onListen);
 
 // Stream
+const stream = new Sse();
 
 app.get('/stream', async (request, response) => {
   console.log('got a request on stream');
