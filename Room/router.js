@@ -4,6 +4,18 @@ const User = require('../User/model');
 const router = new Router();
 const auth = require('../auth/middleware');
 
+// Stream rood data setup
+// function factory(stream) {
+//   const router = new Router();
+//   const words = ["red", "green", "blue", "yellow"];
+
+//   //sends all the rooms with all the users in it to the stream/client
+//   async function update() {
+//     const rooms = await Room.findAll({ include: [User] });
+//     const data = JSON.stringify(rooms);
+//     stream.send(data);
+//   }
+
 // User can create a room (POST, authentication required)
 
 router.post('/room', auth, (request, response) => {
@@ -40,9 +52,9 @@ router.get('/room', auth, (request, response, next) => {
     .catch(error => next(error));
 });
 
-// Fetch selected room (GET, authentication required --> ADD)
+// Fetch selected room (GET, authentication required --> ADD MIDDLEWARE IF MISSING)
 
-router.get('/room/:id', (request, response, next) => {
+router.get('/room/:id', auth, (request, response, next) => {
   Room.findByPk(parseInt(request.params.id))
     .then(room => {
       if (!room) {
@@ -54,11 +66,11 @@ router.get('/room/:id', (request, response, next) => {
     .catch(error => next(error));
 });
 
-// Update selected Room (PUT, authentication required --> ADD) FIX VALIDATION
+// Update selected Room (PUT, authentication required --> ADD MIDDLEWARE IF MISSING!)
 
 // FOR LATER: add if (room.status === "waiting" && room.users.length < 2)
 
-router.put('/room/:id', (request, response) => {
+router.put('/room/:id', auth, (request, response) => {
   //console.log(parseInt(request.params.id));
   //console.log('req body:', request.body);
   Room.findByPk(parseInt(request.params.id)).then(room => {
@@ -89,7 +101,7 @@ router.put('/room/:id', (request, response) => {
       return response.send({
         status: room.status,
         room: room.id,
-        message: 'room is already full',
+        message: 'room is already full, redirecting to lobby',
       });
       //.then(() => response.redirect('/room')); this does not work
       // how to redirect to lobby here?
