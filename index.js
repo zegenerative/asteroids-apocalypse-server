@@ -9,6 +9,7 @@ const app = express();
 const cors = require('cors');
 const corsMiddleware = cors();
 const bodyParser = require('body-parser');
+const Sse = require('json-sse');
 const parserMiddleware = bodyParser.json();
 
 // Models
@@ -40,6 +41,9 @@ Room.bulkCreate([
   },
 ]).catch(console.error);
 
+// Setup stream
+const stream = new Sse();
+
 // Use middleware
 app.use(corsMiddleware);
 app.use(parserMiddleware);
@@ -53,3 +57,15 @@ function onListen() {
 }
 
 app.listen(port, onListen);
+
+// Stream
+
+app.get('/stream', async (request, response) => {
+  console.log('got a request on stream');
+  const rooms = await Room.findAll();
+  const data = JSON.stringify(rooms);
+  console.log('data is:', data);
+
+  stream.updateInit(data);
+  stream.init(request, response);
+});
