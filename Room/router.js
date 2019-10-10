@@ -56,21 +56,7 @@ router.get('/room/:id', (request, response, next) => {
 
 // Update selected Room (PUT, authentication required --> ADD) FIX VALIDATION
 
-// router.put('/room/:id', (request, response) => {
-//   //console.log(parseInt(request.params.id));
-//   //console.log('req body:', request.body);
-//   Room.findByPk(parseInt(request.params.id)).then(room => {
-//     //console.log(room.dataValues);
-//     if (room) {
-//       return room.update(request.body).then(room => {
-//         //console.log('UPDATED room:', room.dataValues);
-//         return response.json(room);
-//       });
-//     } else {
-//       return response.status(404).send({ message: 'No such room exists' });
-//     }
-//   });
-// });
+// FOR LATER: add if (room.status === "waiting" && room.users.length < 2)
 
 router.put('/room/:id', (request, response) => {
   //console.log(parseInt(request.params.id));
@@ -78,23 +64,33 @@ router.put('/room/:id', (request, response) => {
   Room.findByPk(parseInt(request.params.id)).then(room => {
     //console.log(room.dataValues);
     if (room.status === 'empty') {
-      return room.update(request.body).then(room => {
-        return response
-          .status(200)
-          .send({ status: room.status, room: room.id, message: 'ok' });
-      });
+      return room
+        .update({
+          roomId: request.params.id,
+          status: 'waiting',
+        })
+        .then(room => {
+          return response
+            .status(200)
+            .send({ status: room.status, room: room.id, message: 'ok' });
+        });
     } else if (room.status === 'waiting') {
-      return room.update(request.body).then(room => {
-        return response
-          .status(200)
-          .send({ status: room.status, room: room.id });
-      });
+      return room
+        .update({
+          roomId: request.params.id,
+          status: 'full',
+        })
+        .then(room => {
+          return response
+            .status(200)
+            .send({ status: room.status, room: room.id });
+        });
     } else if (room.status === 'full') {
       return room.update(request.body).then(room => {
         return response
           .status(200)
           .send({ status: room.status, room: room.id });
-        //.then(response.redirect('/room'));
+        //.then(response.redirect('/room')) --> we want to redirect to the lobby at this point
       });
     } else {
       return response.status(404).send({ message: 'No such room exists' });
