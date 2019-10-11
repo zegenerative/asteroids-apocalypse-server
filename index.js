@@ -56,14 +56,14 @@ function onListen() {
 app.listen(port, onListen);
 
 // Stream
-const stream = new Sse();
+//const stream = new Sse();
 
-app.get('/stream', async (request, response) => {
-  console.log('got a request on stream');
-  const rooms = await Room.findAll();
-  const data = JSON.stringify(rooms);
-  console.log('data is:', data);
+// app.get('/stream', async (request, response) => {
+//   console.log('got a request on stream');
+//   const rooms = await Room.findAll();
+//   const data = JSON.stringify(rooms);
+//   console.log('data is:', data);
 
-  stream.updateInit(data);
-  stream.init(request, response);
-});
+//   stream.updateInit(data);
+//   stream.init(request, response);
+// });
