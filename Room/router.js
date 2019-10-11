@@ -75,15 +75,6 @@ router.get('/gameStream/room/:id', async (request, response, next) => {
 
   gameStream.updateInit(data);
   gameStream.init(request, response);
-
-  // .then(room => {
-  //   if (!room) {
-  //     return response.status(404).send({ message: 'Galaxy does not exist' });
-  //   } else {
-  //     return response.send(room);
-  //   }
-  // })
-  // .catch(error => next(error));
 });
 
 // Update room  status and current players
