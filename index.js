@@ -56,7 +56,7 @@ function onListen() {
 app.listen(port, onListen);
 
 // Stream
-const stream = new Sse();
+//const stream = new Sse();
 
 // app.get('/stream', async (request, response) => {
 //   console.log('got a request on stream');

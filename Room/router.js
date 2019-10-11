@@ -25,7 +25,11 @@ const auth = require('../auth/middleware');
 //   }
 // });
 
-const stream = new Sse();
+const allStreams = {};
+
+//this is just one stream
+const roomStream = new Sse();
+const gameStream = new Sse();
 
 router.post('/room', async (request, response) => {
   // console.log('got a request on /message', request.body);
@@ -36,23 +40,24 @@ router.post('/room', async (request, response) => {
 
   const room = await Room.findAll();
   const data = JSON.stringify(room);
-  stream.send(data);
+  roomStream.send(data);
   response.status(200);
   response.send('room created');
 });
 
 // Fetch all Rooms data for stats (GET, authentication required)
+//lobby
 router.get('/stream', async (request, response) => {
   console.log('got a request on stream');
   const rooms = await Room.findAll();
   const data = JSON.stringify(rooms);
   console.log('data is:', data);
 
-  stream.updateInit(data);
-  stream.init(request, response);
+  roomStream.updateInit(data);
+  roomStream.init(request, response);
 });
 
-router.get('/room', auth, (request, response, next) => {
+router.get('/room', (request, response, next) => {
   Room.findAll({
     order: [['createdAt', 'DESC']],
   })
@@ -68,60 +73,98 @@ router.get('/room', auth, (request, response, next) => {
 
 // Fetch selected room (GET, authentication required --> ADD MIDDLEWARE IF MISSING)
 
-router.get('/room/:id', auth, (request, response, next) => {
-  Room.findByPk(parseInt(request.params.id))
-    .then(room => {
-      if (!room) {
-        return response.status(404).send({ message: 'Galaxy does not exist' });
-      } else {
-        return response.send(room);
-      }
-    })
-    .catch(error => next(error));
+router.get('/gameStream/room/:id', async (request, response, next) => {
+  const room = await Room.findByPk(parseInt(request.params.id));
+  const data = JSON.stringify(room);
+  console.log('data is:', data);
+
+  gameStream.updateInit(data);
+  gameStream.init(request, response);
+
+  // .then(room => {
+  //   if (!room) {
+  //     return response.status(404).send({ message: 'Galaxy does not exist' });
+  //   } else {
+  //     return response.send(room);
+  //   }
+  // })
+  // .catch(error => next(error));
 });
 
 // Update selected Room (PUT, authentication required --> ADD MIDDLEWARE IF MISSING!)
+// router.put('/room/:id', auth, (request, response) => {
+//   //console.log(parseInt(request.params.id));
+//   //console.log('req body:', request.body);
+//   Room.findByPk(parseInt(request.params.id)).then(room => {
+//     //console.log(room.dataValues);
+//     if (room.status === 'empty') {
+//       return room
+//         .update({
+//           roomId: request.params.id,
+//           status: 'waiting',
+//         })
+//         .then(room => {
+//           return response
+//             .status(200)
+//             .send({ status: room.status, room: room.id, message: 'ok' });
+//         });
+//     } else if (room.status === 'waiting') {
+//       return room
+//         .update({
+//           roomId: request.params.id,
+//           status: 'full',
+//         })
+//         .then(room => {
+//           return response
+//             .status(200)
+//             .send({ status: room.status, room: room.id });
+//         });
+//     } else if (room.status === 'full') {
+//       return response.send({
+//         status: room.status,
+//         room: room.id,
+//         message: 'room is already full, redirect to lobby',
+//       });
+//       //.then(() => response.redirect('/room')); this does not work
+//       // how to redirect to lobby here?
+//     } else {
+//       return response.status(404).send({ message: 'No such room exists' });
+//     }
+//   });
+// });
 
-// FOR LATER: add if (room.status === "waiting" && room.users.length < 2)
+router.put('/room/:id', async (request, response) => {
+  const room = await Room.findByPk(parseInt(request.params.id));
 
-router.put('/room/:id', auth, (request, response) => {
-  //console.log(parseInt(request.params.id));
-  //console.log('req body:', request.body);
-  Room.findByPk(parseInt(request.params.id)).then(room => {
-    //console.log(room.dataValues);
-    if (room.status === 'empty') {
-      return room
-        .update({
-          roomId: request.params.id,
-          status: 'waiting',
-        })
-        .then(room => {
-          return response
-            .status(200)
-            .send({ status: room.status, room: room.id, message: 'ok' });
-        });
-    } else if (room.status === 'waiting') {
-      return room
-        .update({
-          roomId: request.params.id,
-          status: 'full',
-        })
-        .then(room => {
-          return response
-            .status(200)
-            .send({ status: room.status, room: room.id });
-        });
-    } else if (room.status === 'full') {
-      return response.send({
-        status: room.status,
-        room: room.id,
-        message: 'room is already full, redirect to lobby',
-      });
-      //.then(() => response.redirect('/room')); this does not work
-      // how to redirect to lobby here?
-    } else {
-      return response.status(404).send({ message: 'No such room exists' });
-    }
+  if (room.status === 'empty') {
+    const change = room.update({
+      roomId: request.params.id,
+      status: 'waiting',
+    });
+    const data = JSON.stringify(change);
+    gameStream.send(data);
+  } else if (room.status === 'waiting') {
+    const change = room.update({
+      roomId: request.params.id,
+      status: 'full',
+    });
+    const data = JSON.stringify(change);
+    gameStream.send(data);
+  } else if (room.status === 'full') {
+    return response.send({
+      status: room.status,
+      room: room.id,
+      message: 'room is already full, redirect to lobby',
+    });
+  } else {
+    return response.status(404).send({ message: 'No such room exists' });
+  }
+  // const data = JSON.stringify(change);
+  // gameStream.send(data);
+  response.status(200);
+  response.send({
+    status: room.status,
+    room: room.id,
   });
 });
 
