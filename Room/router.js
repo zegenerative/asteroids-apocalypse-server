@@ -137,23 +137,23 @@ router.put('/room/:id', async (request, response) => {
   const room = await Room.findByPk(parseInt(request.params.id));
 
   if (room.status === 'empty') {
-    const change = room.update({
+    const change = await room.update({
       roomId: request.params.id,
       status: 'waiting',
     });
     const data = JSON.stringify(change);
     gameStream.send(data);
-    roomStream.send(data);
+    // roomStream.send(data);
   } else if (room.status === 'waiting') {
-    const change = room.update({
+    const change = await room.update({
       roomId: request.params.id,
       status: 'full',
     });
     const data = JSON.stringify(change);
     gameStream.send(data);
-    roomStream.send(data);
+    // roomStream.send(data);
   } else if (room.status === 'full') {
-    return response.send({
+    return await response.send({
       status: room.status,
       room: room.id,
       message: 'room is already full, redirect to lobby',
