@@ -31,7 +31,7 @@ const allStreams = {};
 const roomStream = new Sse();
 const gameStream = new Sse();
 
-router.post('/room', async (request, response) => {
+router.post('/room', auth, async (request, response) => {
   // console.log('got a request on /message', request.body);
   const { galaxyName } = request.body;
   const entity = await Room.create({
@@ -143,6 +143,7 @@ router.put('/room/:id', async (request, response) => {
     });
     const data = JSON.stringify(change);
     gameStream.send(data);
+    roomStream.send(data);
   } else if (room.status === 'waiting') {
     const change = room.update({
       roomId: request.params.id,
@@ -150,6 +151,7 @@ router.put('/room/:id', async (request, response) => {
     });
     const data = JSON.stringify(change);
     gameStream.send(data);
+    roomStream.send(data);
   } else if (room.status === 'full') {
     return response.send({
       status: room.status,
