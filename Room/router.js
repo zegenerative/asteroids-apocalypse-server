@@ -96,6 +96,7 @@ router.put('/room/:id', async (request, response) => {
     });
     const data = JSON.stringify(change);
     gameStream.send(data);
+
   } else if (room.status === 'waiting') {
     const change = await room.update({
       roomId: request.params.id,
@@ -104,6 +105,7 @@ router.put('/room/:id', async (request, response) => {
     });
     const data = JSON.stringify(change);
     gameStream.send(data);
+
   } else if (room.status === 'full') {
     return await response.send({
       status: room.status,
