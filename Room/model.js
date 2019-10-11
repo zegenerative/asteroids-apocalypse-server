@@ -14,11 +14,11 @@ const Room = db.define('room', {
     defaultValue: 'empty',
   },
   playerOneId: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     // allowNull: false,
   },
   playerTwoId: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     // allowNull: false,
   },
   playerOneScore: {

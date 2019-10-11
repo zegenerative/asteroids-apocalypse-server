@@ -3,10 +3,10 @@ const db = require('../db');
 
 const RoomRelation = db.define('room_relations', {
   playerOneId: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
   },
   playerTwoId: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
   },
 });
 
