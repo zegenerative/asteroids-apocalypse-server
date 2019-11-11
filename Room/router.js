@@ -77,13 +77,13 @@ router.get('/gameStream/room/:id', async (request, response, next) => {
 });
 
 // Update room  status and current players
-router.put('/room/:id', auth, async (request, response) => {
+router.put('/room/:id', async (request, response) => {
   const { username } = request.body;
   const room = await Room.findByPk(parseInt(request.params.id));
 
   if (room.status === 'empty') {
     const change = await room.update({
-      roomId: request.params.id,
+      id: request.params.id,
       status: 'waiting',
       playerOne: username,
     });
@@ -91,7 +91,7 @@ router.put('/room/:id', auth, async (request, response) => {
     gameStream.send(data);
   } else if (room.status === 'waiting') {
     const change = await room.update({
-      roomId: request.params.id,
+      id: request.params.id,
       status: 'full',
       playerTwo: username,
     });
@@ -115,7 +115,7 @@ router.put('/room/:id', auth, async (request, response) => {
     playerTwo: room.playerTwo,
     playerOneScore: room.playerOneScore,
     playerTwoScore: room.playerTwoScore,
-    winner: room.winner
+    winner: room.winner,
   });
 });
 
