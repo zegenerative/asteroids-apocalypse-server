@@ -91,7 +91,7 @@ router.put('/room/:id', auth, async (request, response) => {
     const change = await room.update({
       roomId: request.params.id,
       status: 'waiting',
-      playerOneId: username,
+      playerOne: username,
     });
     const data = JSON.stringify(change);
     gameStream.send(data);
@@ -99,7 +99,7 @@ router.put('/room/:id', auth, async (request, response) => {
     const change = await room.update({
       roomId: request.params.id,
       status: 'full',
-      playerTwoId: username,
+      playerTwo: username,
     });
     const data = JSON.stringify(change);
     gameStream.send(data);
@@ -117,6 +117,11 @@ router.put('/room/:id', auth, async (request, response) => {
   response.send({
     status: room.status,
     room: room.id,
+    playerOne: room.playerOne,
+    playerTwo: room.playerTwo,
+    playerOneScore: room.playerOneScore,
+    playerTwoScore: room.playerTwoScore,
+    winner: room.winner
   });
 });
 

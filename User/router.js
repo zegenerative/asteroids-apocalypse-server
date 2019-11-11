@@ -57,22 +57,6 @@ router.post('/user', (req, res, next) => {
 
 // Update a user: totalScore and rank FIX ME, add validation logic!
 
-// router.put('/user/:id', (request, response) => {
-//   User.findByPk(parseInt(request.params.id))
-//   .then(user => {
-//     if (user) {
-//       user
-//         .update({ roomId: parseInt(req.body) })
-//         .then(user => {
-//           console.log('UPDATED user:', user.dataValues);
-//           return response.json(user);
-//         });
-//     } else {
-//       return response.status(404).send({ message: 'No such user exists' });
-//     }
-//   });
-// });
-
 router.put('/user/:id', async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id)

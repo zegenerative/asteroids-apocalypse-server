@@ -12,21 +12,21 @@ const Room = db.define('room', {
     values: ['empty', 'waiting', 'full', 'done'],
     defaultValue: 'empty',
   },
-  // playerOneId: {
-  //   type: Sequelize.STRING,
-  // },
-  // playerTwoId: {
-  //   type: Sequelize.STRING,
-  // },
-  // playerOneScore: {
-  //   type: Sequelize.INTEGER,
-  // },
-  // playerTwoScore: {
-  //   type: Sequelize.INTEGER,
-  // },
-  // winner: {
-  //   type: Sequelize.INTEGER,
-  // },
+  playerOneId: {
+    type: Sequelize.STRING,
+  },
+  playerTwoId: {
+    type: Sequelize.STRING,
+  },
+  playerOneScore: {
+    type: Sequelize.INTEGER,
+  },
+  playerTwoScore: {
+    type: Sequelize.INTEGER,
+  },
+  winner: {
+    type: Sequelize.INTEGER,
+  },
 });
 
 Room.hasMany(User);
