@@ -70,7 +70,6 @@ router.get('/room/:id', auth, (request, response, next) => {
 router.get('/gameStream/room/:id', async (request, response, next) => {
   const room = await Room.findByPk(parseInt(request.params.id));
   const data = JSON.stringify(room);
-  console.log('data is:', data);
 
   gameStream.updateInit(data);
   gameStream.init(request, response);
@@ -83,7 +82,6 @@ router.put('/room/:id', auth, async (request, response) => {
 
   if (room.status === 'empty') {
     const change = await room.update({
-      roomId: request.params.id,
       status: 'waiting',
       playerOne: username,
     });
@@ -91,7 +89,6 @@ router.put('/room/:id', auth, async (request, response) => {
     gameStream.send(data);
   } else if (room.status === 'waiting') {
     const change = await room.update({
-      roomId: request.params.id,
       status: 'full',
       playerTwo: username,
     });
