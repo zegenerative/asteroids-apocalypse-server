@@ -3,17 +3,13 @@ const User = require('../User/model');
 // Get user id back out from token
 const { toData } = require('./jwt');
 
-// Next() passes on the req || res object to the next step
-
 function auth(req, res, next) {
   // get headers and split token from header
   const auth =
     req.headers.authorization && req.headers.authorization.split(' ');
-  // check
-  // console.log(auth);
+
   if (auth && auth[0] === 'Bearer' && auth[1]) {
     try {
-      // data is userId
       const data = toData(auth[1]);
       User.findByPk(data.userId)
         .then(user => {
