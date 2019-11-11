@@ -12,10 +12,10 @@ const Room = db.define('room', {
     values: ['empty', 'waiting', 'full', 'done'],
     defaultValue: 'empty',
   },
-  playerOneId: {
+  playerOne: {
     type: Sequelize.STRING,
   },
-  playerTwoId: {
+  playerTwo: {
     type: Sequelize.STRING,
   },
   playerOneScore: {

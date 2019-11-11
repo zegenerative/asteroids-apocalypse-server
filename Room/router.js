@@ -78,12 +78,6 @@ router.get('/gameStream/room/:id', async (request, response, next) => {
 
 // Update room  status and current players
 router.put('/room/:id', auth, async (request, response) => {
-  // const room = await Room.findByPk(parseInt(request.params.id), {
-  //   include: [User],
-  // });
-  //const { id } = toData(jwt);
-  //const user = await User.findByPk(User.id);
-
   const { username } = request.body;
   const room = await Room.findByPk(parseInt(request.params.id));
 
