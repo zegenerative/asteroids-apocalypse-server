@@ -21,8 +21,13 @@ const authRouter = require('./auth/router');
 const userRouter = require('./User/router');
 const roomRouter = require('./Room/router');
 
+// Use middleware
+app.use(corsMiddleware);
+app.use(parserMiddleware);
+app.use(userRouter, authRouter, roomRouter);
+
 // Sync Db and create default rooms
-db.sync({ force: false }).then(() =>
+db.sync({ force: true }).then(() =>
   console.log('Database successfully created')
 );
 
@@ -41,11 +46,6 @@ Room.bulkCreate([
   },
 ]).catch(console.error);
 
-// Use middleware
-app.use(corsMiddleware);
-app.use(parserMiddleware);
-app.use(userRouter, authRouter, roomRouter);
-
 // Port set-up
 const port = process.env.PORT || 4000;
 
@@ -54,16 +54,3 @@ function onListen() {
 }
 
 app.listen(port, onListen);
-
-// Stream
-//const stream = new Sse();
-
-// app.get('/stream', async (request, response) => {
-//   console.log('got a request on stream');
-//   const rooms = await Room.findAll();
-//   const data = JSON.stringify(rooms);
-//   console.log('data is:', data);
-
-//   stream.updateInit(data);
-//   stream.init(request, response);
-// });

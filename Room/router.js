@@ -4,7 +4,6 @@ const Room = require('../Room/model');
 const User = require('../User/model');
 const router = new Router();
 const auth = require('../auth/middleware');
-//const { toData } = require('../auth/jwt');
 
 const allStreams = {};
 
