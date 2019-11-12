@@ -6,14 +6,11 @@ const router = new Router();
 const auth = require('../auth/middleware');
 
 const allStreams = {};
-
-//this is just one stream
 const roomStream = new Sse();
 const gameStream = new Sse();
 
-// User can create a room (auth)
+// User can create a room
 router.post('/room', auth, async (request, response) => {
-  // console.log('got a request on /message', request.body);
   const { galaxyName } = request.body;
   const entity = await Room.create({
     galaxyName,
@@ -26,8 +23,7 @@ router.post('/room', auth, async (request, response) => {
   response.send('room created');
 });
 
-// Fetch all Rooms data and stream
-//lobby
+// Fetch all Rooms' data and stream
 router.get('/stream', async (request, response) => {
   console.log('got a request on stream');
   const rooms = await Room.findAll();
@@ -38,7 +34,7 @@ router.get('/stream', async (request, response) => {
   roomStream.init(request, response);
 });
 
-// Get all rooms
+// Fetch all the rooms
 router.get('/room', auth, (request, response, next) => {
   Room.findAll({
     order: [['createdAt', 'DESC']],
@@ -53,7 +49,7 @@ router.get('/room', auth, (request, response, next) => {
     .catch(error => next(error));
 });
 
-// Fetch selected room (auth)
+// Fetch selected room by id
 router.get('/room/:id', auth, (request, response, next) => {
   Room.findByPk(parseInt(request.params.id))
     .then(room => {
@@ -76,7 +72,7 @@ router.get('/gameStream/room/:id', async (request, response, next) => {
   gameStream.init(request, response);
 });
 
-// Update room  status and current players
+// Update room status and current players
 router.put('/room/:id', async (request, response) => {
   const { username } = request.body;
   const room = await Room.findByPk(parseInt(request.params.id));
