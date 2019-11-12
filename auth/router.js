@@ -9,6 +9,7 @@ const router = new Router();
 router.post('/login', (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
+  const username = req.body.username;
 
   if (!email || !password) {
     res.status(400).send({
@@ -34,7 +35,7 @@ router.post('/login', (req, res, next) => {
           res.send({
             jwt: toJWT({ userId: entity.id }),
             username: entity.username,
-            id: entity.id
+            id: entity.id,
           });
         } else {
           res.status(400).send({
