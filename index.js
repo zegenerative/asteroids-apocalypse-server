@@ -27,7 +27,7 @@ app.use(parserMiddleware);
 app.use(userRouter, authRouter, roomRouter);
 
 // Sync Db and create default rooms
-db.sync({ force: true }).then(() =>
+db.sync({ force: false }).then(() =>
   console.log('Database successfully created')
 );
 
