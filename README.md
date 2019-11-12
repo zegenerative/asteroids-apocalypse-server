@@ -1,53 +1,55 @@
-# Asteroid Apocalypse - Game Server
+# ✨ Asteroid Apocalypse - Game Server
 
 ## What this project is about
 
-The Dynamic-Student-Assessment is a project for Codaisseur. The aim is to accurately measure the level of Javascript of potential students who sign up for the coding bootcamp. Better assessments of students Javascript level before they start the course, should increase the Bootcamp completion rate.
+Asteroid Apocalypse is a game project built in 4 days during the Codaisseur web development bootcamp. The aim of the assignment was to build a full-stack multiplayer game app from scratch, implementing technology that supports multiple simultaneous games with a lobby system. The goal of our project was to implement a new technology (p5js) for the creation of custom graphics, and data streams.
 
-The test should measure students current level and give recommendations based on the results. The questions should change in complexity based on the provided student answers and level.
-
-- **[Game Client](https://github.com/Official-Codaisseur-Graduate/Dynamic-Student-Assessment-Test-Client)**
-  Focuses on the applicant UI and contains the login page and admissions test.
+- **[Related repos: Game Client](https://github.com/zegenerative/asteroid-apocalypse-client)**
+  Game UI: players can sign-up and login, create new rooms and play the game.
 
 ## Table of contents:
 
 - **[How to install](#how-to-install)**
-- **[Features](#features-built-so-far-and-the-routes)**
-- **[Create React App docs](#create-react-app)**
-- **[Contributors](#features-built-so-far-overview-with-pull-requests)**
+- **[Technologies used](#technologies-used)**
+- **[Contributors](#contributors)**
 
 ## How to install
 
-1. Clone the git repository
+1. Clone the git repository:
 
-`git clone git@github.com:Official-Codaisseur-Graduate/Dynamic-Student-Assessment-Test-Client.git`
+`git@github.com:zegenerative/asteroid-apocalypse-server.git`
 
-In the project directory
+2. In your terminal, run the following commands:
 
-2. Run npm install
-3. Run npm start. The app runs in the development mode on http://localhost:3000 in the browser.
+`npm install`
 
-4. Checkout the **[Server ReadMe](link to be added)** to install and run the server.
+3. To start the terminal with nodemon, use the following command (this assumes nodemon is installed globally)
 
-## Features built so far and the routes
+`nodemon index.js`
 
-#### 👇 Click links to view the individual pages (install the App first!)👇
+4. To start the code without tracking saved changes, you can simply run:
 
-- **[Login page](http://localhost:3000/login)**
-- **[Instructions page](http://localhost:3000/instructions)**
-- **[Admission test](http://localhost:3000/admission-test)**
+`node index`
 
-The main structure and components for the test client have been made. Full implementation with the server and admin client is pending. For more detailed overview of what's completed and needs to be done checkout: **[Test Client Project Board](#goals-for-this-project)**
+As a standard we are using port 4000 for this server.
 
-## Create React App
+5. Checkout the **[Client ReadMe](https://github.com/zegenerative/asteroid-apocalypse-client/blob/development/README.md)** to install and run the client.
 
-This project was scaffolded using the create-react-app cli.
+TESTING:
+Room dummy data will automatically be added to your database (3 default rooms)
 
-**[The standard create-react-app docs can be found in here](./create-react-app-docs.md)**
+If you are currently running nodemon with the command mentioned above, nodemon index, the dummy data will be automatically added to your database, otherwise, you can simply run node index in your terminal.
+
+## Technologies used
+
+- PostgreSQL
+- Sequelize
+- Express
+- JWT
+
+For a more detailed overview of what's completed and what still needs to be implemented check: **[Project Board](https://github.com/zegenerative/asteroid-apocalypse-server/projects/1)**
 
 ## Contributors
-
-#### Special thanks to:
 
 - **[Ivana H](https://github.com/future-ruins)**
 - **[Zeger de Vos](https://github.com/zegenerative)**
