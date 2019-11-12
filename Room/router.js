@@ -66,7 +66,6 @@ router.get('/room/:id', auth, (request, response, next) => {
 router.get('/gameStream/room/:id', async (request, response, next) => {
   const room = await Room.findByPk(parseInt(request.params.id));
   const data = JSON.stringify(room);
-  console.log('data is:', data);
 
   gameStream.updateInit(data);
   gameStream.init(request, response);
