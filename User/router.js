@@ -7,7 +7,6 @@ const db = require('../db');
 const auth = require('../auth/middleware');
 
 // Create new user
-
 router.post('/user', (req, res, next) => {
   const { email, password, username } = req.body;
 
@@ -20,7 +19,7 @@ router.post('/user', (req, res, next) => {
     };
     console.log(user);
 
-    // check if email or username is already used
+    // check if email or username is already in use
     User.findOne({
       where: { email },
       attributes: ['email'],
@@ -55,16 +54,15 @@ router.post('/user', (req, res, next) => {
   }
 });
 
-// Update a user: totalScore and rank FIX ME, add validation logic!
-
+// Update a user
 router.put('/user/:id', async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id)
-    const updatedUser = await user.update(req.body)
-    res.send(updatedUser)
-  } catch(err) {
-    console.error(err)
+    const user = await User.findByPk(req.params.id);
+    const updatedUser = await user.update(req.body);
+    res.send(updatedUser);
+  } catch (err) {
+    console.error(err);
   }
-})
+});
 
 module.exports = router;
